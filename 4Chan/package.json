@@ -1,0 +1,19 @@
+{
+  "name": "4chan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node build/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "download-file": "^0.1.5",
+    "mkdirp": "^0.5.1",
+    "request": "^2.88.0",
+    "rxjs": "^6.3.3",
+    "sync-loop": "^0.1.1"
+  }
+}
