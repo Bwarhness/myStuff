@@ -1,8 +1,8 @@
-// [3 / adv / an / asp / biz / cgl / ck / co / diy / fa / fit / gd / his / int / jp / lit / mlp / mu / n / news / out / po / qst / sci / sp / tg / toy / trv / tv / vp / wsg / wsr / x
+// ["a" , "b" , "c" , "d" , "e" , "f" , "g" , "gif" , "h" , "hr" , "k" , "m" , "o" , "p" , "r" , "s" , "t" , "u" , "v" , "vg" , "vr" , "w" , "wg", "i" , "ic", "r9k" , "s4s" , "vip" , "qa", "cm" , "hm" , "lgbt" , "y", "3" , "aco" , "adv" , "an" , "asp" , "bant" , "biz" , "cgl" , "ck" , "co" , "diy" , "fa" , "fit" , "gd" , "hc" , "his" , "int" , "jp" , "lit" , "mlp" , "mu" , "n" , "news" , "out" , "po" , "pol" , "qst" , "sci" , "soc" , "sp" , "tg" , "toy" , "trv" , "tv" , "vp" , "wsg", "wsr , "x"]
 
 
 let request = require('request');
-let boards = ["fit"];
+let boards = ["b" , "fit", "pol","s4s"]// "h" , "hr" , "k" , "m" , "o" , "p" , "r" , "s" , "t" , "u" , "v" , "vg" , "vr" , "w" , "wg", "i" , "ic", "r9k" , "s4s" , "vip" , "qa", "cm" , "hm" , "lgbt" , "y", "3" , "aco" , "adv","fit" , "gd" , "hc" , "his" , "int" , "jp" , "lit" , "mlp" , "mu" , "n" , "news" , "out" , "po" , "pol" , "qst" , "sci" , "soc" , "sp" , "tg" , "toy" , "trv" , "tv" , "vp" , "wsg","wsr","x"];
 let boardsContainingGreenText = [];
 let posts = [];
 startUp();
@@ -16,7 +16,9 @@ function startUp() {
     request(`http://a.4cdn.org/${board}/catalog.json`, {
             json: true 
         }, function (error, response, body) {
-
+            if (error || body == undefined) {
+                return;
+            }
             const threads = [].concat.apply([], body.map(p => p.threads));
             const bestThreads = threads.filter(p =>
                 (p.com && p.com.toLowerCase().includes("greentext")) || (p.sub && p.sub.toLowerCase().includes("greentext")))
@@ -25,6 +27,7 @@ function startUp() {
                 }
             if (index == boards.length -1) {
                 doMore();
+                console.log("getting green texts")
             }
             })
     }
@@ -32,6 +35,7 @@ function startUp() {
         for (let boardIndex = 0; boardIndex < boardsContainingGreenText.length; boardIndex++) {
             const board = boardsContainingGreenText[boardIndex];
             for (let index = 0; index < board.threads.length; index++) {
+                let savedBoardIndex = boardIndex;
                 const savedBoard = board;
                 const thread = board.threads[index];
                 request('http://a.4cdn.org/' + board.board + '/thread/' + thread.no + '.json', {json: true}, function (error, response, body) {
@@ -41,7 +45,8 @@ function startUp() {
                     const postsWithGreenText = body.posts.filter(p => p.com && p.com.toLowerCase().includes('class="quote"'));
                     posts = posts.concat(postsWithGreenText);
                     if (index == savedBoard.threads.length -1 && 
-                        boardIndex == boardsContainingGreenText.length -1) {
+                        savedBoardIndex == boardsContainingGreenText.length -1) {
+                        console.log("started listening");
                         startListening();
                     };
                 });
@@ -72,6 +77,7 @@ function writeGreenText() {
 
     extractor = require('unfluff');
     data = extractor(posts[Math.ceil(Math.random() * posts.length)].com);
+    console.log("-----------------------------------------")
     console.log(data.text);
 
 
