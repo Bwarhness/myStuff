@@ -9,29 +9,45 @@ console.log("running")
 ///////STEPS
 /// 1:
 /// Get the items from the list,
-var WebTorrent = require('webtorrent')
-
-var client = new WebTorrent()
-
-var magnetURI = 'magnet:?xt=urn:btih:252A8BA942E9DCAA8D001EB2EB0B6C0BA224690D'
-
-client.add(magnetURI, { path: 'games' }, function (torrent) {
-  torrent.on('done', function () {
-    console.log('torrent download finished')
-  })});
 
 
+    if (fs.existsSync('allDownloadLinks.json')) {
+        console.log("downloading a game")
+        let allGames = JSON.parse(fs.readFileSync('allDownloadLinks.json', 'utf8'));
+        let random = allGames[Math.ceil(Math.random() * allGames.length)]
 
-//    allGameLinks = [];
-//    if (fs.existsSync('allGameLinks.json')) {
-//     allGameLinks = JSON.parse(fs.readFileSync('allGameLinks.json', 'utf8'));
-//     }
-//    currentPage = 1;
-//    if (allGameLinks.length > 0) {
-//     getDownloadLink()
-//    } else {
-//     getGamesFromList();
-//    }
+        var WebTorrent = require('webtorrent')
+
+        var client = new WebTorrent()
+
+        var magnetURI = random
+        client.add(magnetURI, { path: 'games' }, function (torrent) {
+
+            torrent.on('download', function (bytes) {
+                process.stdout.clearLine();
+                process.stdout.cursorTo(0);
+                process.stdout.write(`${torrent.dn}: ${torrent.progress.toString().slice(0,4)}% - ${torrent.downloadSpeed / 1000 / 1000}  Mb/s`);
+              })
+
+        torrent.on('done', function () {
+            console.log('torrent download finished. Get ready to play ur game!')
+        })});
+    } else {
+
+
+
+   allGameLinks = [];
+   if (fs.existsSync('allGameLinks.json')) {
+    allGameLinks = JSON.parse(fs.readFileSync('allGameLinks.json', 'utf8'));
+    }
+   currentPage = 1;
+   if (allGameLinks.length > 0) {
+    getDownloadLink()
+   } else {
+    getGamesFromList();
+   }
+}
+
     function getGamesFromList() {
         request(`http://freegogpcgames.com/page/${currentPage}/?s`, function(error, response, html){
             if(!error){
@@ -44,7 +60,7 @@ client.add(magnetURI, { path: 'games' }, function (torrent) {
                     getGamesFromList();
                 } else {
                     fs.writeFile("allGameLinks.json", JSON.stringify(allGameLinks), function(err){
-                        if(err){console.log(err);} else {console.log("Archived it all");}
+                        if(err){console.log(err);} else {console.log("Archived it all"); process.exit(1);}
                 });
                 }
             }
@@ -63,6 +79,7 @@ client.add(magnetURI, { path: 'games' }, function (torrent) {
                     const downloadLink = $('.entry-content strong > a').map((i, x) => $(x).attr('href')).toArray()[0];
                     downloadLinkList.push(downloadLink);
                     console.log(downloadLinkList.length)
+                    downloadLinkList = downloadLinkList.filter(p => p != null)
                     fs.writeFile("allDownloadLinks.json", JSON.stringify(downloadLinkList), function(err){
                         if(err){console.log(err);} else {console.log("Archived it all");}
                     });
