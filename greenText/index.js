@@ -1,19 +1,20 @@
 // [3 / adv / an / asp / biz / cgl / ck / co / diy / fa / fit / gd / his / int / jp / lit / mlp / mu / n / news / out / po / qst / sci / sp / tg / toy / trv / tv / vp / wsg / wsr / x
-let request = require('request')
 
-let boards = ["fit"]
 
+let request = require('request');
+let boards = ["fit"];
 let boardsContainingGreenText = [];
+let posts = [];
+startUp();
 
 
 
-for (let index = 0; index < boards.length; index++) {
+
+function startUp() {
+    for (let index = 0; index < boards.length; index++) {
     const board = boards[index];
-
-
-
     request(`http://a.4cdn.org/${board}/catalog.json`, {
-            json: true
+            json: true 
         }, function (error, response, body) {
 
             const threads = [].concat.apply([], body.map(p => p.threads));
@@ -27,24 +28,51 @@ for (let index = 0; index < boards.length; index++) {
             }
             })
     }
-
-
     function doMore() {
-        for (let index = 0; index < boardsContainingGreenText.length; index++) {
-            const board = boardsContainingGreenText[index];
+        for (let boardIndex = 0; boardIndex < boardsContainingGreenText.length; boardIndex++) {
+            const board = boardsContainingGreenText[boardIndex];
             for (let index = 0; index < board.threads.length; index++) {
+                const savedBoard = board;
                 const thread = board.threads[index];
                 request('http://a.4cdn.org/' + board.board + '/thread/' + thread.no + '.json', {json: true}, function (error, response, body) {
                     if (error || body == undefined) {
                         return;
                     }
                     const postsWithGreenText = body.posts.filter(p => p.com && p.com.toLowerCase().includes('class="quote"'));
-                    console.log(postsWithGreenText);
-                })
-            }
+                    posts = posts.concat(postsWithGreenText);
+                    if (index == savedBoard.threads.length -1 && 
+                        boardIndex == boardsContainingGreenText.length -1) {
+                        startListening();
+                    };
+                });
+            };
 
-        }
-    }
-    function writeGreenText(){
+        };
+    };
+};
 
-    }
+function startListening() {
+    writeGreenText();
+    var term = require( 'terminal-kit' ).terminal ;
+
+    term.grabInput() ;
+    
+    term.on( 'key' , function( name , matches , data ) {  
+        console.log( "'key' event:" , name ) ;
+    
+        // Detect CTRL-C and exit 'manually'
+        if ( name === 'RIGHT' ) { 
+            process.stdout.write('\033c');
+            writeGreenText(); }
+
+        if ( name === 'CTRL_C' ) { process.exit() ; }
+    } ) ;
+}
+function writeGreenText() {
+
+    extractor = require('unfluff');
+    data = extractor(posts[Math.ceil(Math.random() * posts.length)].com);
+    console.log(data.text);
+
+
+};
