@@ -11,9 +11,8 @@ startUp();
 
 
 function startUp() {
-    for (let index = 0; index < boards.length; index++) {
-    const board = boards[index];
-    request(`http://a.4cdn.org/${board}/catalog.json`, {
+    boards.forEach(board => {
+        request(`http://a.4cdn.org/${board}/catalog.json`, {
             json: true 
         }, function (error, response, body) {
             if (error || body == undefined) {
@@ -21,38 +20,42 @@ function startUp() {
             }
             const threads = [].concat.apply([], body.map(p => p.threads));
             const bestThreads = threads.filter(p =>
-                (p.com && p.com.toLowerCase().includes("greentext")) || (p.sub && p.sub.toLowerCase().includes("greentext")))
+                (p.com && p.com.toLowerCase().includes('class="quote"')) || (p.sub && p.sub.toLowerCase().includes('class="quote"')))
                 if (bestThreads.length > 0) {
                 boardsContainingGreenText = boardsContainingGreenText.concat({board:board, threads:bestThreads});
                 }
-            if (index == boards.length -1) {
-                doMore();
+            if (boards.indexOf(board) == boards.length -1) {
                 console.log("getting green texts")
+
+                doMore();
+                
             }
             })
-    }
+    }); 
     function doMore() {
-        for (let boardIndex = 0; boardIndex < boardsContainingGreenText.length; boardIndex++) {
-            const board = boardsContainingGreenText[boardIndex];
-            for (let index = 0; index < board.threads.length; index++) {
-                let savedBoardIndex = boardIndex;
-                const savedBoard = board;
-                const thread = board.threads[index];
-                request('http://a.4cdn.org/' + board.board + '/thread/' + thread.no + '.json', {json: true}, function (error, response, body) {
-                    if (error || body == undefined) {
-                        return;
-                    }
-                    const postsWithGreenText = body.posts.filter(p => p.com && p.com.toLowerCase().includes('class="quote"'));
+        console.log("doing more")
+        let bordsProcessed = 0;
+        
+        boardsContainingGreenText.forEach(board => {
+            bordsProcessed++;
+            let threadsProcessed = 0;
+
+            board.threads.forEach(thread => {
+                request('http://a.4cdn.org/' + board.board + '/thread/' + thread.no + '.json', {json: true},  (error, response, body) => {
+                threadsProcessed = threadsProcessed + 1;
+                if (!(error || body == undefined)) {
+                    const postsWithGreenText = body.posts.filter(p => p.com && p.com != undefined && p.com.toLowerCase().includes('class="quote"'));
                     posts = posts.concat(postsWithGreenText);
-                    if (index == savedBoard.threads.length -1 && 
-                        savedBoardIndex == boardsContainingGreenText.length -1) {
+
+                    }
+                    console.log(bordsProcessed == boardsContainingGreenText.length, threadsProcessed == board.threads.length)
+                    if (bordsProcessed == boardsContainingGreenText.length && threadsProcessed == board.threads.length) {
                         console.log("started listening");
                         startListening();
                     };
                 });
-            };
-
-        };
+            }); 
+        });
     };
 };
 
