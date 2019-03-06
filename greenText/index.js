@@ -8,6 +8,35 @@ let posts = [];
 ///MY FUCKING NOTES
 // Min 5 sætninger i streg
 // discard hypertext
+
+//init
+Promise.all(get4ChanPromises()).then(function(result) {
+    Promise.all(getThreadPromises()).then(
+        (result) => {
+            activateUserInput();
+        } 
+    ).catch(
+        (err) => {console.log("wat")}
+    )
+}, function(err) {
+    console.log(err);
+})
+
+
+
+
+
+
+
+
+/// FUNCTIONS
+
+
+
+
+
+//Used to search catalog API and find all the threads where the first post contains something that looks like a greentext
+//Then it stored all the boards in boardsContainingGreenText, including arrays of threads
 function get4ChanPromises() {
     let startupPromises = []
     boards.forEach(board => {
@@ -36,21 +65,8 @@ function get4ChanPromises() {
     });  
     return startupPromises;
 }
-
-
-
-Promise.all(get4ChanPromises()).then(function(result) {
-    Promise.all(getThreadPromises()).then(
-        (result) => {
-            startListening();
-        } 
-    ).catch(
-        (err) => {console.log("wat")}
-    )
-}, function(err) {
-    console.log(err);
-})
-
+//used to search through the threads, and finds all the posts that it thinks has greentext in it. 
+//when its done, push it to the posts array
 function getThreadPromises() {
     let threadsPromises = [];
     console.log("doing more")
@@ -80,7 +96,12 @@ function getThreadPromises() {
 };
 
 
-function startListening() {
+
+
+
+
+
+function activateUserInput() {
     writeGreenText();
     var keypress = require('keypress');
     // use decoration to enable stdin to start sending ya events 
