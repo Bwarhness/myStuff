@@ -4,25 +4,10 @@ let boards = ["b" , "fit", "pol","s4s"]// "h" , "hr" , "k" , "m" , "o" , "p" , "
 let boardsContainingGreenText = [];
 let posts = [];
 
-var userDetails;
-function initialize() {
-    // Setting URL and headers for request
-    var options = {
-        url: 'http://a.4cdn.org/wsg/catalog.json',
-    };
-    // Return new promise 
-    return new Promise(function(resolve, reject) {
-     // Do async job
-        request.get(options, function(err, resp, body) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(JSON.parse(body));
-            }
-        })
-    })
-}
 
+///MY FUCKING NOTES
+// Min 5 sætninger i streg
+// discard hypertext
 function get4ChanPromises() {
     let startupPromises = []
     boards.forEach(board => {
@@ -35,14 +20,16 @@ function get4ChanPromises() {
                 if (error || body == undefined) {
                     reject(err);
                 }
+                console.log(`getting threads from ${board}`)
                 const threads = [].concat.apply([], body.map(p => p.threads));
-                const bestThreads = threads.filter(p =>
-                    (p.com && p.com.toLowerCase().includes('class="quote"') && p.com.length > 200) || (p.sub && p.sub.toLowerCase().includes('class="quote"')))
+                const bestThreads = threads.filter(post =>
+                    {
+                        return (post.com && post.com != undefined && post.com.toLowerCase().includes('&gt;'))
+
+                    })
                     if (bestThreads.length > 0) {
                     boardsContainingGreenText = boardsContainingGreenText.concat({board:board, threads:bestThreads});
                     }
-                    console.log("done") 
-
                     resolve(body);
                 });
            }));
@@ -52,15 +39,13 @@ function get4ChanPromises() {
 
 
 
-var initializePromise = get4ChanPromises();
-Promise.all(initializePromise).then(function(result) {
-    var initialisedThreads = getThreadPromises();
-    Promise.all(initialisedThreads).then(
+Promise.all(get4ChanPromises()).then(function(result) {
+    Promise.all(getThreadPromises()).then(
         (result) => {
             startListening();
         } 
     ).catch(
-        (err) => {console.log(err)}
+        (err) => {console.log("wat")}
     )
 }, function(err) {
     console.log(err);
@@ -69,24 +54,27 @@ Promise.all(initializePromise).then(function(result) {
 function getThreadPromises() {
     let threadsPromises = [];
     console.log("doing more")
-    let bordsProcessed = 0;
-    
+
     boardsContainingGreenText.forEach(board => {
 
         board.threads.forEach(thread => {
             threadsPromises.push( new Promise(function(resolve, reject) {
             request('http://a.4cdn.org/' + board.board + '/thread/' + thread.no + '.json', {json: true},  (error, response, body) => {
             if (!(error || body == undefined)) {
-                const postsWithGreenText = body.posts.filter(p => p.com && p.com != undefined && p.com.toLowerCase().includes('class="quote"'));
+                const postsWithGreenText = body.posts.filter(post =>
+                     post.com &&
+                     post.com != undefined && 
+                     !post.com.toLowerCase().includes('&gt;&gt;') &&
+                     post.com.toLowerCase().includes('&gt;') &&
+                      post.com.length > 200 && 
+                      post.com.split('&gt;').length > 10);
                 posts = posts.concat(postsWithGreenText);
                 resolve(body);
                 }
                 reject(error)
             });
             }));
-
         }); 
-        
     });
     return threadsPromises;
 };
@@ -94,28 +82,34 @@ function getThreadPromises() {
 
 function startListening() {
     writeGreenText();
-    var term = require( 'terminal-kit' ).terminal ;
-
-    term.grabInput() ;
-    
-    term.on( 'key' , function( name , matches , data ) {  
-        console.log( "'key' event:" , name ) ;
-    
-        // Detect CTRL-C and exit 'manually'
-        if ( name === 'RIGHT' ) { 
-            process.stdout.write('\033c');
-            writeGreenText(); }
-
-        if ( name === 'CTRL_C' ) { process.exit() ; }
-    } ) ;
+    var keypress = require('keypress');
+    // use decoration to enable stdin to start sending ya events 
+    keypress(process.stdin);
+    // listen for the "keypress" event
+    process.stdin.on('keypress', function (ch, key) {
+        if (key && key.name == 'right') {
+            writeGreenText();
+          }
+        if (key && key.ctrl && key.name == 'c') {
+          process.stdin.pause();
+        }
+    });
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
 }
-function writeGreenText() {
 
+
+function writeGreenText() {
     extractor = require('unfluff');
-    var h2p = require('html2plaintext')
-    data = h2p(posts[Math.ceil(Math.random() * posts.length)].com);
-    console.log("-----------------------------------------")
-    console.log(data);
+    var h2p = require('html2plaintext');
+    let post = posts[Math.ceil(Math.random() * posts.length)]
+    try {
+        data = h2p(post.com);
+    } catch (error) {
+        console.log(post)
+    }
+    console.log("-------------------------------------------")
+    console.log(data)
 
 
 };
