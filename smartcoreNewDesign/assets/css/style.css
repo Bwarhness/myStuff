@@ -1,0 +1,47 @@
+.bar {
+  height: 20px;
+  background-color: white;
+  width: 100%;
+  position: relative; }
+  .bar .circle {
+    background-color: green;
+    height: calc(20px * 1.5);
+    width: calc(20px * 1.5);
+    border-radius: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
+    transform: translatey(-50%); }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0; }
+  body .grid {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    background-color: darkslateblue;
+    display: flex;
+    color: white; }
+    body .grid > div {
+      padding: 100px; }
+    body .grid .menu {
+      flex: 2;
+      border-right: 1px solid white;
+      display: flex;
+      flex-direction: column; }
+      body .grid .menu .menu-item {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        font-size: 6em; }
+    body .grid .content {
+      flex: 3;
+      display: flex;
+      flex-direction: column; }
+      body .grid .content .content-item {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center; }

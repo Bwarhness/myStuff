@@ -1,0 +1,22 @@
+@import './variables';
+
+$bar-height:20px;
+
+.bar{
+    height: $bar-height;
+    background-color: $accent-color;
+    width: 100%;
+    position: relative;
+    .circle{
+        background-color: green;
+        height: calc(#{$bar-height} * 1.5);
+        width: calc(#{$bar-height} * 1.5);
+        border-radius: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%);
+        transform: translatey(-50%);
+
+    }
+}

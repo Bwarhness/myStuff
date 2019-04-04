@@ -1,0 +1,15 @@
+.bar {
+  height: 20px;
+  background-color: white;
+  width: 100%;
+  position: relative; }
+  .bar .circle {
+    background-color: green;
+    height: calc(20px * 1.5);
+    width: calc(20px * 1.5);
+    border-radius: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
+    transform: translatey(-50%); }

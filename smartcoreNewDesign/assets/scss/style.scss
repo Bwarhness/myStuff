@@ -1,0 +1,46 @@
+@import './bar.scss';
+@import './variables';
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+
+    .grid {
+        box-sizing: border-box;
+
+        height: 100vh;
+        width: 100vw;
+        background-color: $primary-color;
+        display: flex;
+        color: $accent-color;
+        > div{
+            padding: 100px;
+        }
+        .menu {
+            flex: 2;
+            border-right: 1px solid $accent-color;
+            display: flex;
+            flex-direction: column;
+
+            .menu-item {
+                display: flex;
+                align-items: center;
+                flex: 1;
+                font-size: 6em;
+            }
+        }
+
+        .content {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+
+            .content-item {
+                display: flex;
+                flex: 1;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}
