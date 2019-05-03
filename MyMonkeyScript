@@ -1,0 +1,136 @@
+// ==UserScript==
+// @name         Lets remove all the useless shit
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://*/*
+// @grant        none
+// ==/UserScript==
+
+(function () {
+    'use strict';
+    let fixed = [];
+    // Your code here...
+    let lastFixed;
+    fixImages();
+    httpInterceptor();
+    setInterval(fixImages, 1000)
+    setInterval(fixVideo, 1000)
+
+    //remove 'HUR DUR buy dis shit'
+    document.getElementById('BuyMembershipPopup').remove()
+
+    function httpInterceptor(){
+        let oldXHROpen = window.XMLHttpRequest.prototype.open;
+        window.XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
+            // do something with the method, url and etc.
+            if(url.includes('getTopVisits')){
+                this.addEventListener('load', function() {
+                // do something with the response text
+//                 console.log('load: ' + this.responseText);
+               let parsedInfo = JSON.parse(this.responseText);
+               parsedInfo.Profiles.forEach(profile => {
+               profile.purl = fixSingleImage(profile.purl);
+               })
+
+                    this.resonseText = JSON.stringify(parsedInfo)
+
+            });
+             }
+
+
+            return oldXHROpen.apply(this, arguments);
+        }
+    }
+    function fixSingleImage(src){
+        if(!src || !src.includes('?'))
+            return
+        let censorFilter = src.split('?')[1].split('&')[0]
+            let censorLetter = censorFilter[censorFilter.length - 1]
+
+            let finalStuff = ""
+            switch (censorLetter) {
+                case 'A':
+                    finalStuff = censorFilter;
+                    finalStuff = finalStuff.replace(/.$/, "Q");
+                    break;
+                case 'Q':
+                    finalStuff = censorFilter;
+                    finalStuff = finalStuff.replace(/.$/, "A");
+                    break;
+                case 'g':
+                    finalStuff = censorFilter;
+                    finalStuff = finalStuff.replace(/.$/, "w");
+                    break;
+                case 'w':
+                    finalStuff = censorFilter;
+                    finalStuff = finalStuff.replace(/.$/, "g");
+                    break;
+                default:
+                    break;
+            }
+                        src = src.replace(censorFilter, finalStuff)
+
+        return src
+    }
+    function fixImages() {
+        //https://a2-img.gnol.com/v2/4353030/1767392/4470309/a8779a25-46ab-4389-9fe0-dfab179fc59b_0.jpg?S=UQ&T=3xprT0ipukVe4kQdA+Tphw&V=2
+        // S=UQ&T=3xprT0ipukVe4kQdA+Tphw&V=2 :  S=UQ& =>  S=UA& to show images. sometimes. Figure out reaoson
+        const allImages = Array.from(document.getElementsByTagName('img'))
+        const potentialCensoredImages = allImages.filter(p => p.src.includes('v2'))
+        potentialCensoredImages.forEach((image) => {
+            let censorFilter = image.src.split('?')[1].split('&')[0]
+            let censorLetter = censorFilter[censorFilter.length - 1]
+
+            let finalStuff = ""
+            switch (censorLetter) {
+                case 'A':
+                    finalStuff = censorFilter;
+                    finalStuff = finalStuff.replace(/.$/, "Q");
+                    break;
+                case 'Q':
+                    finalStuff = censorFilter;
+                    finalStuff = finalStuff.replace(/.$/, "A");
+                    break;
+                case 'g':
+                    finalStuff = censorFilter;
+                    finalStuff = finalStuff.replace(/.$/, "w");
+                    break;
+                case 'w':
+                    finalStuff = censorFilter;
+                    finalStuff = finalStuff.replace(/.$/, "g");
+                    break;
+                default:
+                    break;
+            }
+            if (finalStuff && fixed.indexOf(image) < 0) {
+                image.src = image.src.replace(censorFilter, finalStuff)
+                fixed.push(image)
+            }
+        })
+    }
+    function fixVideo(){
+        let videos = Array.from(document.getElementsByTagName('video'));
+        if (videos[0]) {
+            let src = videos[0].src
+            let videoBox = document.getElementById('videobox');
+            if (videoBox && lastFixed != src){
+                videoBox.innerHTML = "";
+                let newVideoNode = document.createElement("video");
+                newVideoNode.src = src;
+                newVideoNode.style.maxWidth = '100%';
+                newVideoNode.style.maxHeight = '100%';
+
+                newVideoNode.controls = true;
+                newVideoNode.loop = true;
+
+                newVideoNode.autoplay = true;
+                videoBox.appendChild(newVideoNode);
+                lastFixed = src;
+                //cleanup
+//                 videoBox.removeAttribute('id')
+            }
+        }
+    }
+})();
