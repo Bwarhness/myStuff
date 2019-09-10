@@ -1,0 +1,14 @@
+{
+    "title": "outConf",
+    "urls": [
+        {
+            "url": "https://exrx.net/Lists/Directory",
+            "actions": [
+                {
+                    "selector": "$('.col-sm-6 > ul > li >a')",
+                    "action": 10
+                }
+            ]
+        }
+    ]
+}
