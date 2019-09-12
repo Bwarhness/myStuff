@@ -1,0 +1,22 @@
+{
+  "name": "battle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "afplay": "^1.0.3",
+    "diont": "^0.9.7",
+    "express": "^4.15.2",
+    "install": "^0.13.0",
+    "ip": "^1.1.5",
+    "npm": "^6.11.3",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
+  }
+}
