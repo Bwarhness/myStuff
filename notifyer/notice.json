@@ -1,0 +1,32 @@
+{
+	"quaterHourly": [
+		{
+			"title": "quaterHourly test",
+			"text": "quaterHourlydo something",
+			"link": " quaterHourlyhttp://dksrv206:5230/#"
+		},
+		{
+			"text": "quaterHourlycontact jeppe"
+		}
+	],
+	"halfHourly": [
+		{
+			"title": "halfHourlytest",
+			"text": "halfHourlydo something",
+			"link": "halfHourlyhttp://dksrv206:5230/#"
+		},
+		{
+			"text": "halfHourlycontact jeppe"
+		}
+	],
+	"hourly": [
+		{
+			"title": "hourlytest",
+			"text": "dhourlyo something",
+			"link": "hourlyhttp://dksrv206:5230/#"
+		},
+		{
+			"text": "hourlycontact jeppe"
+		}
+	]
+}
