@@ -1,32 +1,19 @@
 {
 	"quaterHourly": [
-		{
-			"title": "quaterHourly test",
-			"text": "quaterHourlydo something",
-			"link": " quaterHourlyhttp://dksrv206:5230/#"
-		},
-		{
-			"text": "quaterHourlycontact jeppe"
-		}
+
 	],
 	"halfHourly": [
-		{
-			"title": "halfHourlytest",
-			"text": "halfHourlydo something",
-			"link": "halfHourlyhttp://dksrv206:5230/#"
-		},
-		{
-			"text": "halfHourlycontact jeppe"
-		}
 	],
 	"hourly": [
 		{
-			"title": "hourlytest",
-			"text": "dhourlyo something",
-			"link": "hourlyhttp://dksrv206:5230/#"
+			"title": "SuperOffice - Tasks",
+			"text": "Remember to insert tasknumber and task text, when submitting superoffice times",
+			"link": " quaterHourlyhttp://dksrv206:5230/#"
 		},
 		{
-			"text": "hourlycontact jeppe"
+			"title": "Do superOffice ya cunt",
+			"text": "Do superOffice ya cunt"
+
 		}
 	]
 }

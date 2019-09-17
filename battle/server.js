@@ -4,6 +4,18 @@ var diont = require('diont')();
 var ip = require('ip');
 
 
+
+// ======
+// TEST CODE
+// ======
+
+
+
+setInterval(() => {
+	doSomethingRandom()
+}, 1000);
+
+
 // ======
 // Announce our own service
 // ======
@@ -34,3 +46,11 @@ io.on('connection', function(socket){
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
+
+
+function doSomethingRandom(){
+	console.log('doing random');
+	
+	io.emit('key','f')
+}
