@@ -4,15 +4,10 @@ const { app, BrowserWindow } = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+global.win
 
 function createWindow () {
-    protocol.interceptFileProtocol('file', (request, callback) => {
-        const url = request.url.substr(7)    /* all urls start with 'file://' */
-        callback({ path: path.normalize(`${__dirname}/${url}`)})
-      }, (err) => {
-        if (err) console.error('Failed to register protocol')
-      })
+
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
@@ -22,7 +17,9 @@ function createWindow () {
     }
   })
   // and load the index.html of the app.
-  win.loadFile('./server-core/electron/build/index.html')
+  win.loadURL('http://localhost:3000')
+
+//   win.loadFile('./server-core/electron/build/index.html')
 
   // Open the DevTools.
   win.webContents.openDevTools()
