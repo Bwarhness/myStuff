@@ -18,11 +18,6 @@ diont.on("serviceAnnounced", function(serviceInfo) {
         connectSocketIO(serviceInfo.service.host, serviceInfo.service.port)
     }
 });
-// diont.on("serviceRenounced", function(serviceInfo) {
-// 	console.log("A service was renounced", serviceInfo.service);
-// 	console.log("All known services", diont.getServiceInfos());
-// });
-
 // ======
 // Socket connection
 // ======
@@ -34,3 +29,4 @@ function connectSocketIO(ip, port){
     let key = require('./client-features/key')
     key.setIOListeners(socket);
 }
+

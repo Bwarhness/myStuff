@@ -1,56 +1,25 @@
-
-
-var diont = require('diont')();
-var ip = require('ip');
-
-
+let udpDiscorver = require('./server-core/udp-discovery')
+let socket = require('./server-core/socket')
+let electron = require('./server-core/electron')
 
 // ======
 // TEST CODE
 // ======
-
-
-
+function doSomethingRandom(){
+	console.log('doing random');
+	socket.broadcast('key', 'f')
+}
 setInterval(() => {
 	doSomethingRandom()
 }, 1000);
 
-
-// ======
-// Announce our own service
-// ======
-var service = {
-	name: "socketIO",
-	host: ip.address(), // when omitted, defaults to the local IP
-	port: 3000
-	// any additional information is allowed and will be propagated
-};
-diont.announceService(service);
-
-
-
-
 // ======
 // SOCKET IO
 // ======
+socket.initSocket();
+// ======
+// Announce our own service
+// ======
+udpDiscorver.annouceService();
 
 
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
-
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
-
-http.listen(3000, function(){
-  console.log('listening on *:3000');
-});
-
-
-
-function doSomethingRandom(){
-	console.log('doing random');
-	
-	io.emit('key','f')
-}

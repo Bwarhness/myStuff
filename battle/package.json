@@ -2,8 +2,9 @@
   "name": "battle",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -20,6 +21,7 @@
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
+    "electron": "^6.0.9",
     "node-key-sender": "^1.0.11"
   }
 }
