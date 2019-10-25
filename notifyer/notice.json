@@ -1,16 +1,12 @@
 {
 	"quaterHourly": [
 		{
-			"title": "2573 HTB - Opdel mails i ordre og forespørgsler",
-			"text": "Få person navn med ud i supplier get request."
+			"title": "ASk Jeppe to rearrange ext data for correct order",
+			"text": "See more at https://system-metode.axosoft.com/viewitem?id=2583&type=tasks&force_use_number=false"
 		}
 
 	],
 	"halfHourly": [
-		{
-			"title": "Klar til prod",
-			"text": "2543 HTB - Materialer, Lovgivning omkring materialer skal fremgå af udbudsmaterialet til leverandørerne. "
-		}
 	],
 	"hourly": [
 		{

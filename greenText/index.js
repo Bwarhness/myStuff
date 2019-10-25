@@ -22,13 +22,6 @@ Promise.all(get4ChanPromises()).then(function(result) {
     console.log(err);
 })
 
-
-
-
-
-
-
-
 /// FUNCTIONS
 
 
@@ -83,7 +76,7 @@ function getThreadPromises() {
                      !post.com.toLowerCase().includes('&gt;&gt;') &&
                      post.com.toLowerCase().includes('&gt;') &&
                       post.com.length > 200 && 
-                      post.com.split('&gt;').length > 10);
+                      post.com.split('&gt;').length > 5);
                 posts = posts.concat(postsWithGreenText);
                 resolve(body);
                 }
@@ -109,6 +102,11 @@ function activateUserInput() {
     // listen for the "keypress" event
     process.stdin.on('keypress', function (ch, key) {
         if (key && key.name == 'right') {
+            setPostIndex(currentPostIndex + 1)
+            writeGreenText();
+          }
+          if (key && key.name == 'left') {
+            setPostIndex(currentPostIndex -1)
             writeGreenText();
           }
         if (key && key.ctrl && key.name == 'c') {
@@ -118,18 +116,25 @@ function activateUserInput() {
     process.stdin.setRawMode(true);
     process.stdin.resume();
 }
+function setPostIndex(newPostIndex) {
 
+    if (newPostIndex < 0 || (posts.length -1) < newPostIndex ) {
+        return;
+    }
+    currentPostIndex = newPostIndex;
+}
 
+currentPostIndex = 0;
 function writeGreenText() {
     extractor = require('unfluff');
     var h2p = require('html2plaintext');
-    let post = posts[Math.ceil(Math.random() * posts.length)]
+    let post = posts[currentPostIndex]
     try {
         data = h2p(post.com);
     } catch (error) {
         console.log(post)
     }
-    console.log("-------------------------------------------")
+    console.log(`--------------------${currentPostIndex+1}/${posts.length}-----------------------`)
     console.log(data)
 
 
