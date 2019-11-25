@@ -1,6 +1,6 @@
 // ["a" , "b" , "c" , "d" , "e" , "f" , "g" , "gif" , "h" , "hr" , "k" , "m" , "o" , "p" , "r" , "s" , "t" , "u" , "v" , "vg" , "vr" , "w" , "wg", "i" , "ic", "r9k" , "s4s" , "vip" , "qa", "cm" , "hm" , "lgbt" , "y", "3" , "aco" , "adv" , "an" , "asp" , "bant" , "biz" , "cgl" , "ck" , "co" , "diy" , "fa" , "fit" , "gd" , "hc" , "his" , "int" , "jp" , "lit" , "mlp" , "mu" , "n" , "news" , "out" , "po" , "pol" , "qst" , "sci" , "soc" , "sp" , "tg" , "toy" , "trv" , "tv" , "vp" , "wsg", "wsr , "x"]
 let request = require('request');
-let boards = ["b" , "fit", "pol","s4s"]// "h" , "hr" , "k" , "m" , "o" , "p" , "r" , "s" , "t" , "u" , "v" , "vg" , "vr" , "w" , "wg", "i" , "ic", "r9k" , "s4s" , "vip" , "qa", "cm" , "hm" , "lgbt" , "y", "3" , "aco" , "adv","fit" , "gd" , "hc" , "his" , "int" , "jp" , "lit" , "mlp" , "mu" , "n" , "news" , "out" , "po" , "pol" , "qst" , "sci" , "soc" , "sp" , "tg" , "toy" , "trv" , "tv" , "vp" , "wsg","wsr","x"];
+let boards = ["b" , "fit", "pol","s4s", "r9k"]// "h" , "hr" , "k" , "m" , "o" , "p" , "r" , "s" , "t" , "u" , "v" , "vg" , "vr" , "w" , "wg", "i" , "ic", "r9k" , "s4s" , "vip" , "qa", "cm" , "hm" , "lgbt" , "y", "3" , "aco" , "adv","fit" , "gd" , "hc" , "his" , "int" , "jp" , "lit" , "mlp" , "mu" , "n" , "news" , "out" , "po" , "pol" , "qst" , "sci" , "soc" , "sp" , "tg" , "toy" , "trv" , "tv" , "vp" , "wsg","wsr","x"];
 let boardsContainingGreenText = [];
 let posts = [];
 
@@ -77,7 +77,10 @@ function getThreadPromises() {
                      post.com.toLowerCase().includes('&gt;') &&
                       post.com.length > 200 && 
                       post.com.split('&gt;').length > 5);
-                posts = posts.concat(postsWithGreenText);
+                      postsWithGreenText.map(p => p.board  = board.board)
+                      if (postsWithGreenText.length > 0) {
+                          posts = posts.concat(postsWithGreenText);
+                      }
                 resolve(body);
                 }
                 reject(error)
@@ -95,6 +98,11 @@ function getThreadPromises() {
 
 
 function activateUserInput() {
+    posts = posts.sort(function(a, b){
+        if(a.board < b.board) { return -1; }
+        if(a.board > b.board) { return 1; }
+        return 0;
+    });
     writeGreenText();
     var keypress = require('keypress');
     // use decoration to enable stdin to start sending ya events 
@@ -134,8 +142,7 @@ function writeGreenText() {
     } catch (error) {
         console.log(post)
     }
-    console.log(`--------------------${currentPostIndex+1}/${posts.length}-----------------------`)
+    console.log("")
+    console.log(`--------------------${currentPostIndex+1}/${posts.length}  ${post.board}-----------------------`)
     console.log(data)
-
-
 };

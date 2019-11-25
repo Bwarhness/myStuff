@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-notifier": "^5.4.3"
+    "commander": "^4.0.1",
+    "node-notifier": "^5.4.3",
+    "readline-sync": "^1.4.10"
   }
 }
