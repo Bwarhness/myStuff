@@ -27,16 +27,11 @@ function connectSocketIO(ip, port){
     socket.on('connect', function(){
         console.log("person connected")
     });
-    socket.on('attack', function(data){
-        console.log(data);
-    });
     socket.on('disconnect', function(){
         console.log("person disconnected")
     });
     electron.startOverlay(socket);
     require('./client-features/key').setIOListeners(socket);
     require('./client-features/html/effect-overlay').setIOListeners(socket);
-
-
 }
 

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>Document</title>
     <style>
       body {
@@ -13,13 +14,16 @@
       }
     </style>
     <script>
-              const setIgnoreMouseEvents = require('electron').remote.getCurrentWindow().setIgnoreMouseEvents
-      addEventListener('pointerover', function mousePolicy (event) {
-        mousePolicy._canClick = event.target === document.documentElement ?
-          mousePolicy._canClick && setIgnoreMouseEvents(true, {forward: true}) :
-          mousePolicy._canClick || setIgnoreMouseEvents(false) || 1
-      })
-      setIgnoreMouseEvents(true, {forward: true}) // BUG: this must be triggered after the devtools loaded IF you load the console 'detached'
+      const setIgnoreMouseEvents = require("electron").remote.getCurrentWindow()
+        .setIgnoreMouseEvents;
+      addEventListener("pointerover", function mousePolicy(event) {
+        mousePolicy._canClick =
+          event.target === document.documentElement
+            ? mousePolicy._canClick &&
+              setIgnoreMouseEvents(true, { forward: true })
+            : mousePolicy._canClick || setIgnoreMouseEvents(false) || 1;
+      });
+      setIgnoreMouseEvents(true, { forward: true });
     </script>
   </head>
   <body>
@@ -32,11 +36,25 @@
     <button onclick="doStuff('burn')">
       burn
     </button>
+    <button onclick="doStuff('flash-bang')">
+      flash-bang
+    </button>
+    <button onclick="doStuff('doom-mode')">
+      doom-mode
+    </button>
+    <button onclick="doMouse('doom-mode')">
+      mouse
+    </button>
     <script>
       function doStuff(stuffToDo) {
         const { ipcRenderer } = require("electron");
         ipcRenderer.send("attack", stuffToDo);
       }
+      function doMouse(stuffToDo) {
+        const { ipcRenderer } = require("electron");
+        ipcRenderer.send("key", stuffToDo);
+      }
     </script>
+    <script></script>
   </body>
 </html>

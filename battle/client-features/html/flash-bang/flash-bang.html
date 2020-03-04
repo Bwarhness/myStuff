@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        audio{
+            display: none;
+        }
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    #bang{
+        display: none;
+        transform: scale(2);
+        background-color: white;
+        border-radius: 50%;
+        width: 100vw;
+        height: 100vh;
+        transition: all 0.2s ease-in-out;
+    }
+    .now{
+        transform: scale(0.5) !important;
+        background-color: rgba(0, 0, 255, 0)!important;
+    }
+    </style>
+</head>
+<body>
+    <div id="bang">
+    </div>
+    <audio autoplay src="bang.mp3"></audio>
+    <script>
+                setTimeout(() => {
+            let bla = document.getElementById('bang');
+            bla.style.display = "block";
+        }, 1000);
+        setTimeout(() => {
+            let bla = document.getElementById('bang');
+            bla.classList.toggle("now")
+        }, 2000);
+    </script>
+</body>
+</html>
