@@ -16,7 +16,7 @@ Promise.all(get4ChanPromises()).then(function(result) {
             activateUserInput();
         } 
     ).catch(
-        (err) => {console.log("wat")}
+        (err) => {console.log(err)}
     )
 }, function(err) {
     console.log(err);
@@ -136,6 +136,9 @@ currentPostIndex = 0;
 function writeGreenText() {
     extractor = require('unfluff');
     var h2p = require('html2plaintext');
+    const clipboardy = require('clipboardy');
+
+    clipboardy.writeSync('🦄'); 
     let post = posts[currentPostIndex]
     try {
         data = h2p(post.com);

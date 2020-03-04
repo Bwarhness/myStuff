@@ -2,7 +2,7 @@ var diont = require('diont')();
 let client = require('./client-features/sound')
 let point = require('./client-features/points')
 let shield = require('./client-features/shield')
-
+const electron = require('./client-core/overlay/overlay');
 
 
 // ======
@@ -23,10 +23,20 @@ diont.on("serviceAnnounced", function(serviceInfo) {
 // ======
 function connectSocketIO(ip, port){
     const socket = require('socket.io-client')(`http://${ip}:${port}`);
-    socket.on('connect', function(){});
-    socket.on('event', function(data){});
-    socket.on('disconnect', function(){});
-    let key = require('./client-features/key')
-    key.setIOListeners(socket);
+    
+    socket.on('connect', function(){
+        console.log("person connected")
+    });
+    socket.on('attack', function(data){
+        console.log(data);
+    });
+    socket.on('disconnect', function(){
+        console.log("person disconnected")
+    });
+    electron.startOverlay(socket);
+    require('./client-features/key').setIOListeners(socket);
+    require('./client-features/html/effect-overlay').setIOListeners(socket);
+
+
 }
 

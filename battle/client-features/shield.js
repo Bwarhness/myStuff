@@ -15,4 +15,5 @@ exports.addShield = shieldToAdd => this.setShield(_shield + shieldToAdd);
 exports.removeShield = shieldToRemove => {
     const currentShield = this.getShield();
     let pointsToBe = currentShield - shieldToRemove;
+    this.setShield(pointsToBe);
 }

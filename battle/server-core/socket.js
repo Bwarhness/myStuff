@@ -11,10 +11,17 @@ exports.initSocket = () => {
     io.on('connection', (socket) => {
         _clients.push(socket);
         console.log('a user connected');
+
+        
+        socket.on('attack', typeOfAttack => {
+            console.log(typeOfAttack)
+            io.emit('attack', typeOfAttack)
+        })
     });
     http.listen(3000, function () {
         console.log('listening on *:3000');
     });
+
 }
 exports.broadcast = (event, param) => io.emit(event,param);
 exports.emitToClient = (clientId, event, param) => this.getClient(client).emit(event, param);
