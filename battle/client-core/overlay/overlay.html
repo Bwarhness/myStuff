@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <style>
       body {
         pointer-events: none;
@@ -13,30 +15,23 @@
       }
     </style>
     <script>
-              const setIgnoreMouseEvents = require('electron').remote.getCurrentWindow().setIgnoreMouseEvents
-      addEventListener('pointerover', function mousePolicy (event) {
-        mousePolicy._canClick = event.target === document.documentElement ?
-          mousePolicy._canClick && setIgnoreMouseEvents(true, {forward: true}) :
-          mousePolicy._canClick || setIgnoreMouseEvents(false) || 1
-      })
-      setIgnoreMouseEvents(true, {forward: true}) // BUG: this must be triggered after the devtools loaded IF you load the console 'detached'
+      const setIgnoreMouseEvents = require("electron").remote.getCurrentWindow()
+        .setIgnoreMouseEvents;
+      addEventListener("pointerover", function mousePolicy(event) {
+        mousePolicy._canClick =
+          event.target === document.documentElement
+            ? mousePolicy._canClick &&
+              setIgnoreMouseEvents(true, { forward: true })
+            : mousePolicy._canClick || setIgnoreMouseEvents(false) || 1;
+      });
+      setIgnoreMouseEvents(true, { forward: true }); // BUG: this must be triggered after the devtools loaded IF you load the console 'detached'
     </script>
   </head>
   <body>
-    <button onclick="doStuff('pølse')">
-      pølse
-    </button>
-    <button onclick="doStuff('sheep-farm')">
-      sheep-farm
-    </button>
-    <button onclick="doStuff('burn')">
-      burn
-    </button>
-    <script>
-      function doStuff(stuffToDo) {
-        const { ipcRenderer } = require("electron");
-        ipcRenderer.send("attack", stuffToDo);
-      }
+    <div id="menu">
+      <button v-for="item in items" @click="doStuff(item)">{{item}}</button>
+    </div>
+    <script src="vue.js">
     </script>
   </body>
 </html>
