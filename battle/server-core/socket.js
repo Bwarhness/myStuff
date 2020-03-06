@@ -17,6 +17,10 @@ exports.initSocket = () => {
             console.log(typeOfAttack)
             io.emit('attack', typeOfAttack)
         })
+        socket.on('key', typeOfAttack => {
+            console.log(typeOfAttack)
+            io.emit('key', typeOfAttack)
+        })
     });
     http.listen(3000, function () {
         console.log('listening on *:3000');
