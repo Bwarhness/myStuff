@@ -29,9 +29,9 @@ module.exports.startOverlay = socket => {
     console.log("got command from html, and now sending attack to server"); // prints "ping"
     socket.emit("attack", arg);
   });
-  ipcMain.on("key", (event, arg) => {
-    console.log("got command from html, and now sending attack to server"); // prints "ping"
-    socket.emit("key", arg);
+  ipcMain.on("getMenu", (event, arg) => {
+    console.log("got command from html, and now sending attack to server"); // 
+    event.reply('getMenuAttacks', ['pølse', 'sheep-farm', 'burn'])
   });
 
   app.whenReady().then(createWindow);
