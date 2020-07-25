@@ -23,7 +23,6 @@ module.exports.startOverlay = socket => {
     // and load the index.html of the app.
     win.loadURL(`file://${__dirname}/overlay.html`);
   }
-
   const { ipcMain } = require("electron");
   ipcMain.on("attack", (event, arg) => {
     console.log("got command from html, and now sending attack to server"); // prints "ping"
@@ -31,8 +30,7 @@ module.exports.startOverlay = socket => {
   });
   ipcMain.on("getMenu", (event, arg) => {
     console.log("got command from html, and now sending attack to server"); // 
-    event.reply('getMenuAttacks', ['pølse', 'sheep-farm', 'burn'])
+    event.reply('getMenuAttacks', ['pølse', 'sheep-farm', 'burn', 'doom-mode', 'flash-bang'])
   });
-
   app.whenReady().then(createWindow);
 };

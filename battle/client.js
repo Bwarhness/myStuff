@@ -18,6 +18,8 @@ diont.on("serviceAnnounced", function(serviceInfo) {
         connectSocketIO(serviceInfo.service.host, serviceInfo.service.port)
     }
 });
+
+
 // ======
 // Socket connection
 // ======
