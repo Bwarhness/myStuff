@@ -8,6 +8,8 @@ const electron = require('./client-core/overlay/overlay');
 // ======
 // UDP Annoucement
 // ======
+connectSocketIO('62.44.135.225', 3000)
+
 diont.on("serviceAnnounced", function(serviceInfo) {
 	// A service was announced
 	// This function triggers for services not yet available in diont.getServiceInfos()

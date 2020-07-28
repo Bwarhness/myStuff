@@ -30,7 +30,7 @@ module.exports.startOverlay = socket => {
   });
   ipcMain.on("getMenu", (event, arg) => {
     console.log("got command from html, and now sending attack to server"); // 
-    event.reply('getMenuAttacks', ['pølse', 'sheep-farm', 'burn', 'doom-mode', 'flash-bang'])
+    event.reply('getMenuAttacks', ['pølse', 'sheep-farm', 'burn', 'doom-mode', 'flash-bang', 'anders'])
   });
   app.whenReady().then(createWindow);
 };
