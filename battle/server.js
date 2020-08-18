@@ -15,7 +15,6 @@ udpDiscorver.annouceService();
 // ======
 // TEST CODE
 // ======
-
 function doSomethingRandom(){
 	console.log('doing random');
 	socket.broadcast('key', 'f')

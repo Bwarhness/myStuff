@@ -8,6 +8,8 @@ const electron = require('./client-core/overlay/overlay');
 // ======
 // UDP Annoucement
 // ======
+connectSocketIO('62.44.135.225', 3000)
+
 diont.on("serviceAnnounced", function(serviceInfo) {
 	// A service was announced
 	// This function triggers for services not yet available in diont.getServiceInfos()
@@ -18,6 +20,8 @@ diont.on("serviceAnnounced", function(serviceInfo) {
         connectSocketIO(serviceInfo.service.host, serviceInfo.service.port)
     }
 });
+
+
 // ======
 // Socket connection
 // ======
@@ -27,16 +31,11 @@ function connectSocketIO(ip, port){
     socket.on('connect', function(){
         console.log("person connected")
     });
-    socket.on('attack', function(data){
-        console.log(data);
-    });
     socket.on('disconnect', function(){
         console.log("person disconnected")
     });
     electron.startOverlay(socket);
     require('./client-features/key').setIOListeners(socket);
     require('./client-features/html/effect-overlay').setIOListeners(socket);
-
-
 }
 
