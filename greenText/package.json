@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "cli-select": "^1.1.2",
     "clipboardy": "^2.2.0",
     "copy-to-clipboard": "^3.3.1",
     "html2plaintext": "^2.1.2",
